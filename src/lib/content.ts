@@ -29,8 +29,9 @@ export const site = {
   cohort: "2026",
   // Optional: paste a Google Drive *preview* link to let visitors watch in-page.
   // e.g. "https://drive.google.com/file/d/FILE_ID/preview"
-  driveVideoUrl: "",
-  // Web-optimized 720p build (committed). Swap to a hosted URL if you prefer.
+  // Google Drive fallback (file must be shared "Anyone with the link").
+  driveVideoUrl: "https://drive.google.com/file/d/1bNK2dMNmVzSjptqA47VZQKmYgh9L9eqw/preview",
+  // Web-optimized 720p build (committed). Primary source — keeps caption sync.
   localVideo: "/video/intro-web.mp4",
   socials: {
     github: "https://github.com/yadavahc",
