@@ -18,7 +18,13 @@ const links = [
 export default function Vision() {
   return (
     <Section id="vision">
-      <div className="relative overflow-hidden rounded-[2.5rem] glass-strong p-8 sm:p-12 md:p-16">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 40 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+        className="relative overflow-hidden rounded-[2.5rem] glass-strong p-8 sm:p-12 md:p-16"
+      >
         <div className="absolute -right-20 -top-20 size-72 animate-pulse-glow rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.18),transparent_65%)] blur-2xl" />
         <div className="absolute -left-16 bottom-0 size-72 animate-pulse-glow rounded-full bg-[radial-gradient(circle,rgba(200,210,230,0.14),transparent_65%)] blur-2xl [animation-delay:-2s]" />
 
@@ -96,7 +102,7 @@ export default function Vision() {
             Thank you. — {site.fellowship}
           </div>
         </div>
-      </div>
+      </motion.div>
     </Section>
   );
 }

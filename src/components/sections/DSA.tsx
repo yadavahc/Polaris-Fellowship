@@ -77,7 +77,15 @@ export default function DSA() {
             >
               <Counter to={s.count} suffix={s.suffix} />
             </div>
-            <div className="mt-1 text-sm text-[var(--color-faint)]">
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 + i * 0.12 }}
+              className="mt-3 h-px w-full origin-left"
+              style={{ background: `linear-gradient(90deg, ${s.color}, transparent)` }}
+            />
+            <div className="mt-2 text-sm text-[var(--color-faint)]">
               problems solved
             </div>
             <div className="mt-3 text-xs font-medium text-[var(--color-muted)] opacity-0 transition-opacity group-hover:opacity-100">

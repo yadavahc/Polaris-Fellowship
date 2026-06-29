@@ -84,6 +84,10 @@ export default function Hackathons() {
                 <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-center gap-2">
                     <motion.span
+                      initial={{ scale: 0, rotate: -45, opacity: 0 }}
+                      whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
+                      viewport={{ once: true, amount: 0.8 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 14, delay: 0.15 }}
                       whileHover={{ scale: 1.2, rotate: 12 }}
                       className="grid size-9 place-items-center rounded-full"
                       style={{

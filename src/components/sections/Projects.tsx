@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ImageFrame } from "@/components/ui/ImageFrame";
+import { Parallax } from "@/components/ui/Parallax";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { projects } from "@/lib/content";
@@ -33,19 +34,19 @@ export default function Projects() {
               spokenFocus === `project-${slug(p.name)}` && "focus-active"
             )}
           >
-            <div className="md:[direction:ltr]">
+            <Parallax className="md:[direction:ltr]" amount={26}>
               <ImageFrame
                 src={p.image}
                 alt={p.name}
                 ratio="aspect-[16/10]"
                 rounded="rounded-[1.75rem]"
               />
-            </div>
+            </Parallax>
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: i % 2 === 1 ? -56 : 56 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
               className="md:[direction:ltr]"
             >
               <span className="font-mono text-xs uppercase tracking-[0.25em] text-[var(--color-brand-2)]">

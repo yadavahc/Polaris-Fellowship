@@ -40,7 +40,13 @@ export default function Journey() {
             >
               {/* node */}
               <div className="absolute left-[7px] top-1 z-10 sm:left-1/2 sm:-translate-x-1/2">
-                <span className="block size-4 rounded-full border-2 border-[var(--color-brand-2)] bg-[var(--color-bg)] shadow-[0_0_16px_var(--color-brand-2)]" />
+                <motion.span
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, amount: 0.8 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 18, delay: 0.15 }}
+                  className="block size-4 rounded-full border-2 border-white bg-black shadow-[0_0_16px_rgba(255,255,255,0.7)]"
+                />
               </div>
 
               <div className={`col-start-2 sm:col-start-auto ${i % 2 === 0 ? "sm:text-right sm:pr-12" : "sm:[direction:ltr] sm:pl-12"}`}>

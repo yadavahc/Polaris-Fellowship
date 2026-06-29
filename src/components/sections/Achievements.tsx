@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Stagger, StaggerItem } from "@/components/ui/Reveal";
 import { achievements } from "@/lib/content";
 import { Award, X, ExternalLink } from "lucide-react";
 
@@ -18,12 +17,20 @@ export default function Achievements() {
         title="Awards & certifications that mark the path"
       />
 
-      <Stagger className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {achievements.map((a, i) => (
-          <StaggerItem key={a.title}>
             <motion.button
+              key={a.title}
               data-cursor="hover"
               onClick={() => setActive(i)}
+              initial={{ opacity: 0, y: 30, scale: 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1],
+                delay: ((i % 4) + Math.floor(i / 4)) * 0.07,
+              }}
               whileHover={{ y: -6 }}
               className={`group relative block w-full overflow-hidden rounded-2xl glass text-left ${
                 a.kind === "award" ? "ring-glow" : ""
@@ -48,9 +55,8 @@ export default function Achievements() {
                 <div className="text-xs text-[var(--color-faint)]">{a.issuer}</div>
               </div>
             </motion.button>
-          </StaggerItem>
         ))}
-      </Stagger>
+      </div>
 
       {/* Lightbox */}
       <AnimatePresence>

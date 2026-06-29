@@ -24,10 +24,14 @@ export default function Community() {
             >
               <div className="relative aspect-[16/9] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <motion.img
                   src={c.image}
                   alt={c.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  initial={{ scale: 1.28 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-5">

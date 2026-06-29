@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { ImageFrame } from "@/components/ui/ImageFrame";
+import { Parallax } from "@/components/ui/Parallax";
 import { about } from "@/lib/content";
 
 export default function About() {
@@ -15,7 +16,7 @@ export default function About() {
           <SectionHeading kicker={about.kicker} title={about.heading} />
           <div className="mt-8 space-y-5">
             {about.paragraphs.map((p, i) => (
-              <Reveal key={i} delay={i * 0.08} dir="up">
+              <Reveal key={i} delay={i * 0.12} dir="blur" duration={0.9}>
                 <p className="max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
                   {p}
                 </p>
@@ -44,7 +45,7 @@ export default function About() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-sm">
+        <Parallax className="relative mx-auto w-full max-w-sm" amount={28}>
           <div className="absolute -inset-6 -z-10 animate-pulse-glow rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.2),transparent_65%)] blur-2xl" />
           <ImageFrame
             src={about.photo}
@@ -65,7 +66,7 @@ export default function About() {
               className="rounded-xl"
             />
           </motion.div>
-        </div>
+        </Parallax>
       </div>
     </Section>
   );
