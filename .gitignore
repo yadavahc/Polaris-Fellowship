@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large media (host externally / Git LFS)
+public/video/intro.mp4
+Polaris_fellowship-portfolio-video.mp4

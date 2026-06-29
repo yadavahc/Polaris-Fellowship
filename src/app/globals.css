@@ -1,26 +1,204 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ===================== Theme tokens ===================== */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: #000000;
+  --color-bg-soft: #050506;
+  --color-surface: #0b0c0e;
+  --color-fg: #f3f4f7;
+  --color-muted: #a7adba;
+  --color-faint: #5e636e;
+
+  /* Monochrome silver/white system. "brand" tokens kept so existing
+     components inherit the new palette without per-file edits. */
+  --color-brand: #dfe3ec;
+  --color-brand-2: #9aa1b0;
+  --color-brand-3: #ffffff;
+  --color-gold: #cdbf9e;
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --radius-xl2: 1.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #000000;
+  --foreground: #f3f4f7;
+  color-scheme: dark;
+}
+
+* {
+  border-color: color-mix(in oklab, white 8%, transparent);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-brand) 60%, transparent) transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-brand) 45%, transparent);
+  color: white;
+}
+
+/* ===================== Utilities ===================== */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    #ffffff 0%,
+    #d6dbe6 45%,
+    #aab0bd 75%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(100deg, #ffffff 0%, #d8dde7 55%, #9aa1b0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Silver-tinted glass cards with a faint metallic top sheen. */
+.glass {
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, white 7%, transparent),
+      transparent 45%
+    ),
+    color-mix(in oklab, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid color-mix(in oklab, white 12%, transparent);
+}
+
+.glass-strong {
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, white 9%, transparent),
+      transparent 50%
+    ),
+    color-mix(in oklab, var(--color-surface) 90%, transparent);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border: 1px solid color-mix(in oklab, white 16%, transparent);
+}
+
+.ring-glow {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, white 18%, transparent),
+    0 10px 60px -14px color-mix(in oklab, white 28%, transparent);
+}
+
+.glow-brand {
+  box-shadow: 0 0 60px -10px color-mix(in oklab, white 35%, transparent);
+}
+
+.section-active {
+  outline: 1px solid color-mix(in oklab, white 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, white 30%, transparent),
+    0 0 90px -14px color-mix(in oklab, white 30%, transparent);
+}
+
+/* Specific element highlighted by the narration (project/achievement). */
+.focus-active {
+  outline: 1px solid color-mix(in oklab, white 60%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, white 45%, transparent),
+    0 0 70px -10px color-mix(in oklab, white 45%, transparent);
+}
+
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, white 4%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, white 4%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+/* ===================== Keyframes ===================== */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(2deg); }
+}
+.animate-float { animation: float-slow 7s ease-in-out infinite; }
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 18s linear infinite; }
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@keyframes aurora {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(4%, -3%) scale(1.1); }
+  66% { transform: translate(-3%, 4%) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+.animate-aurora { animation: aurora 18s ease-in-out infinite; }
+
+@keyframes scroll-dot {
+  0% { transform: translateY(0); opacity: 0; }
+  35% { opacity: 1; }
+  70% { transform: translateY(14px); opacity: 0; }
+  100% { opacity: 0; }
+}
+.animate-scroll-dot { animation: scroll-dot 1.8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { scrollbar-width: none; }
