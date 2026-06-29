@@ -30,7 +30,8 @@ export const site = {
   // Optional: paste a Google Drive *preview* link to let visitors watch in-page.
   // e.g. "https://drive.google.com/file/d/FILE_ID/preview"
   driveVideoUrl: "",
-  localVideo: "/video/intro.mp4",
+  // Web-optimized 720p build (committed). Swap to a hosted URL if you prefer.
+  localVideo: "/video/intro-web.mp4",
   socials: {
     github: "https://github.com/yadavahc",
     linkedin: "https://www.linkedin.com/in/yadava-hc-907067287",
