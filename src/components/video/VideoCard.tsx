@@ -12,15 +12,11 @@ import {
   X,
   GripVertical,
   ExternalLink,
-  Captions,
-  Rewind,
-  FastForward,
 } from "lucide-react";
 import { site } from "@/lib/content";
 import { buildTimeline, activeCueIndex, type TimedCue } from "@/lib/cues";
 import { useSync } from "@/context/SyncContext";
 import { formatTime } from "@/lib/utils";
-import { Subtitles } from "./Subtitles";
 
 type Mode = "mini" | "theater";
 
@@ -34,37 +30,18 @@ export default function VideoCard() {
   const [muted, setMuted] = useState(false);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [captionsOn, setCaptionsOn] = useState(true);
   const [autoSync, setAutoSync] = useState(true);
   const [showDrive, setShowDrive] = useState(false);
   const [error, setError] = useState(false);
   const [started, setStarted] = useState(false);
-  // Live calibration: shift captions/sync earlier (−) or later (+), persisted.
-  const [offset, setOffset] = useState(0);
-  const [showOffset, setShowOffset] = useState(false);
 
   const lastTarget = useRef<string | null>(null);
-
-  useEffect(() => {
-    const saved = Number(localStorage.getItem("captionOffset"));
-    if (!Number.isNaN(saved)) setOffset(saved);
-  }, []);
-
-  const nudge = (d: number) => {
-    setOffset((o) => {
-      const next = Math.round((o + d) * 100) / 100;
-      localStorage.setItem("captionOffset", String(next));
-      return next;
-    });
-  };
 
   const timeline: TimedCue[] = useMemo(
     () => (duration > 0 ? buildTimeline(duration) : []),
     [duration]
   );
-  // Effective playback position used for all sync, including the calibration.
-  const syncTime = time + offset;
-  const cueIdx = timeline.length ? activeCueIndex(timeline, syncTime) : -1;
+  const cueIdx = timeline.length ? activeCueIndex(timeline, time) : -1;
   const activeCue = cueIdx >= 0 ? timeline[cueIdx] : null;
 
   // Highlight + auto-navigate to whatever is being spoken about.
@@ -164,13 +141,6 @@ export default function VideoCard() {
           </div>
           <div className="flex items-center gap-1">
             <IconBtn
-              title={captionsOn ? "Hide captions" : "Show captions"}
-              active={captionsOn}
-              onClick={() => setCaptionsOn((s) => !s)}
-            >
-              <Captions className="size-4" />
-            </IconBtn>
-            <IconBtn
               title={theater ? "Minimize" : "Theater mode"}
               onClick={() => setMode(theater ? "mini" : "theater")}
             >
@@ -233,12 +203,6 @@ export default function VideoCard() {
             </div>
           )}
 
-          {/* Caption overlay */}
-          {captionsOn && activeCue && playing && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-3 pt-10">
-              <Subtitles cue={activeCue} time={syncTime} compact={!theater} />
-            </div>
-          )}
         </div>
 
         {/* Controls */}
@@ -268,65 +232,17 @@ export default function VideoCard() {
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setShowOffset((s) => !s)}
-                data-cursor="hover"
-                title="Align captions to the audio"
-                className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
-                  showOffset || offset !== 0
-                    ? "bg-white/15 text-white"
-                    : "bg-white/5 text-[var(--color-faint)]"
-                }`}
-              >
-                Align
-              </button>
-              <button
-                onClick={() => setAutoSync((s) => !s)}
-                data-cursor="hover"
-                title="Auto-navigate the page to what I'm talking about"
-                className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
-                  autoSync ? "bg-white/15 text-white" : "bg-white/5 text-[var(--color-faint)]"
-                }`}
-              >
-                Sync {autoSync ? "on" : "off"}
-              </button>
-            </div>
+            <button
+              onClick={() => setAutoSync((s) => !s)}
+              data-cursor="hover"
+              title="Auto-navigate the page to what I'm talking about"
+              className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
+                autoSync ? "bg-white/15 text-white" : "bg-white/5 text-[var(--color-faint)]"
+              }`}
+            >
+              Sync {autoSync ? "on" : "off"}
+            </button>
           </div>
-
-          {/* Caption alignment calibration */}
-          <AnimatePresence initial={false}>
-            {showOffset && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="mt-2.5 flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2">
-                  <span className="text-[10px] uppercase tracking-wider text-[var(--color-faint)]">
-                    Caption timing
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <IconBtn title="Captions earlier" onClick={() => nudge(-0.25)}>
-                      <Rewind className="size-3.5" />
-                    </IconBtn>
-                    <button
-                      onClick={() => nudge(-offset)}
-                      className="min-w-14 rounded-md bg-black/40 px-2 py-1 text-center font-mono text-[11px] text-white"
-                      title="Reset"
-                    >
-                      {offset > 0 ? "+" : ""}
-                      {offset.toFixed(2)}s
-                    </button>
-                    <IconBtn title="Captions later" onClick={() => nudge(0.25)}>
-                      <FastForward className="size-3.5" />
-                    </IconBtn>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           {site.driveVideoUrl && (
             <button
